@@ -1,10 +1,34 @@
 from enum import Enum
 
+import requests
+
 class Movidesk:
 
-    def __init__(self, token, *, url='https://api.movidesk.com/public/v1'):
+    def __init__(self, token, url='https://api.movidesk.com/public/v1'):
         self.token = token
         self.url = url
+
+
+    @property
+    def tickets(self):
+        response = requests.get(
+            url='/'.join([self.url, 'tickets']),
+            params={'token': self.token, '$select': 'id,subject'})
+
+        response.raise_for_status()
+        return response.json()
+
+    def search_ticket(self, **kwargs):
+        subject = kwargs['subject']
+        response = requests.get(
+            url='/'.join([self.url, 'tickets']),
+            params={'token': self.token, '$select': 'id,subject',
+                    '$filter': f'contains(subject, \'{subject}\')'})
+
+        response.raise_for_status()
+        return response.json()
+
+
 
 class TicketType(Enum):
     INTERNO = 1

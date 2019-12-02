@@ -50,3 +50,16 @@ def test_search_ticket_by_subject_finding_one():
     assert isinstance(found_tickets, Sequence)
     assert len(found_tickets) == 1
 
+@responses.activate
+def test_search_ticket_one_dynamic_fields():
+    responses.add(responses.GET, 'https://api.movidesk.com/public/v1/tickets',
+                  json=[{'subject': 'teste gatilho não assumido', 'id': 25}],
+                  status=200)
+
+    token = 'anything'
+    md = Movidesk(token)
+    md.search_ticket(id=35)
+
+    filter_query = f'$filter=contains(id, \'35\')'
+    called_url = responses.calls[0].request.url
+    assert filter_query in unquote_plus(called_url)

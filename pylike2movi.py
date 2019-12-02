@@ -19,11 +19,13 @@ class Movidesk:
         return response.json()
 
     def search_ticket(self, **kwargs):
-        subject = kwargs['subject']
+
+        filters = ' and '.join([f'contains({k}, \'{v}\')' for (k, v) in kwargs.items()])
+
         response = requests.get(
             url='/'.join([self.url, 'tickets']),
             params={'token': self.token, '$select': 'id,subject',
-                    '$filter': f'contains(subject, \'{subject}\')'})
+                    '$filter': filters})
 
         response.raise_for_status()
         return response.json()

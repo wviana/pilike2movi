@@ -1,15 +1,14 @@
 from enum import Enum
-from json import JSONDecoder
 from inflection import camelize
 
 import requests
+
 
 class Movidesk:
 
     def __init__(self, token, url='https://api.movidesk.com/public/v1'):
         self.token = token
         self.url = url
-
 
     @property
     def tickets(self):
@@ -32,7 +31,7 @@ class Movidesk:
         response.raise_for_status()
         return map(lambda x: Ticket(**x), response.json())
 
-    def update(self, ticket): #Maybe I would be cool to hava just a update with single dispatch
+    def update(self, ticket):  # Maybe I would be cool to hava just a update with single dispatch
         response = requests.patch(
             url='/'.join([self.url, 'tickets']),
             params={'token': self.token, 'id': ticket.id},
@@ -85,6 +84,6 @@ class PersonType(Enum):
 
 
 class ProfileType(Enum):
-    AGENTE =1
+    AGENTE = 1
     CLIENTE = 2
     AGENTE_CLIENTE = 3

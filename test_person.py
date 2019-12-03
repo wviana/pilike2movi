@@ -1,5 +1,6 @@
 from pylike2movi import Person, PersonType, ProfileType
 
+
 def test_person_minimum_data_nao_agente():
     bussines_name = 'Joao da Silva'
     p = Person(
@@ -8,7 +9,7 @@ def test_person_minimum_data_nao_agente():
         profile_type=ProfileType.CLIENTE,
         bussines_name=bussines_name
     )
-    assert p.is_active == True
+    assert p.is_active is True
     assert p.person_type == PersonType.PESSOA
     assert p.profile_type == ProfileType.CLIENTE
     assert p.bussines_name == bussines_name

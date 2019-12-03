@@ -1,5 +1,4 @@
 from pylike2movi import Movidesk
-from pytest import raises
 from collections.abc import Iterable
 from urllib.parse import unquote_plus
 
@@ -92,6 +91,3 @@ def test_add_action_to_existing_ticket():
 
     assert len(responses.calls) == 2
     assert f'id={ticket.id}' in unquote_plus(responses.calls[1].request.url)
-
-
-
